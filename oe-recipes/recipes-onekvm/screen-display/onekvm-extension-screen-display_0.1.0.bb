@@ -6,10 +6,8 @@ PR = "r0"
 ONEKVM_COMPONENT_GIT_URI ??= "git://github.com/onekvm/onekvm-extension-screen-display.git;protocol=https;branch=main"
 ONEKVM_COMPONENT_SRCREV ??= ""
 SRC_URI = "${ONEKVM_COMPONENT_GIT_URI};destsuffix=${BP}"
-SRC_URI += "file://display-page.js"
 SRCREV = "${ONEKVM_COMPONENT_SRCREV}"
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
-inherit onekvm-extension
+inherit onekvm-extension onekvm-web
 
 ONEKVM_EXTENSION_ID = "screen-display"
 ONEKVM_EXTENSION_API_VERSION = "2"
@@ -20,10 +18,11 @@ do_configure[noexec] = "1"
 B = "${WORKDIR}/screen-display-build"
 
 do_compile() {
+    onekvm_web_build
     install -d ${B}/src ${B}/web/dist
     cp -a ${S}/src/. ${B}/src/
     cp -a ${S}/Makefile ${S}/manifest.json.in ${B}/
-    install -m 0644 ${UNPACKDIR}/display-page.js ${B}/web/dist/display-page.js
+    install -m 0644 ${ONEKVM_WEB_BUILD_DIR}/web/dist/display-page.js ${B}/web/dist/display-page.js
     oe_runmake -C ${B} \
         CC="${CC}" \
         CFLAGS="${CFLAGS}" \
