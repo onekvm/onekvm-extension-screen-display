@@ -1,0 +1,16 @@
+[Unit]
+Description=OneKVM screen display
+After=onekvm.service systemd-udev-settle.service
+Wants=onekvm.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/mkdir -p /run/onekvm/display/widgets /data/onekvm/app-data/screen-display/widgets
+Environment=ONEKVM_EXTENSION_CONFIG=/run/onekvm/extensions/screen-display
+Environment=ONEKVM_EXTENSION_DATA=/data/onekvm/app-data/screen-display
+ExecStart=/usr/local/bin/onekvm-screen-display
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

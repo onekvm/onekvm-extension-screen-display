@@ -1,0 +1,138 @@
+{
+  "manifest_version": 1,
+  "id": "screen-display",
+  "i18n": {
+    "default": {
+      "name": "Screen display settings",
+      "description": "Set the home screen and app list on this device."
+    },
+    "zh": {
+      "name": "屏幕显示设置",
+      "description": "设置本机屏幕的主屏和应用列表。"
+    },
+    "zh-TW": {
+      "name": "螢幕顯示設定",
+      "description": "設定本機螢幕的主畫面和應用列表。"
+    }
+  },
+  "version": "@VERSION@",
+  "api_version": 2,
+  "architecture": "@ARCH@",
+  "kind": "service",
+  "author": "OneKVM",
+  "homepage": "https://github.com/onekvm/onekvm-extension-screen-display",
+  "entrypoint": "bin/onekvm-screen-display",
+  "permissions": ["device-fb", "gpio", "network"],
+  "capabilities": [],
+  "default_enabled": true,
+  "settings_reload": "watch",
+  "icon": {"source": "lucide", "name": "monitor"},
+  "page": {
+    "title": "Screen display settings",
+    "renderer": "vue",
+    "entrypoint": "web/display-page.js",
+    "icon": {"source": "lucide", "name": "monitor"}
+  },
+  "methods": [
+    {
+      "name": "info",
+      "command": ["bin/onekvm-screen-display", "info"],
+      "args": [],
+      "available_when_disabled": true
+    },
+    {
+      "name": "list",
+      "command": ["bin/onekvm-screen-display", "widget", "list"],
+      "args": [],
+      "available_when_disabled": true
+    },
+    {
+      "name": "register",
+      "command": ["bin/onekvm-screen-display", "widget", "register"],
+      "args": []
+    },
+    {
+      "name": "unregister",
+      "command": ["bin/onekvm-screen-display", "widget", "unregister"],
+      "args": [
+        {"name": "id", "type": "string", "required": true}
+      ]
+    }
+  ],
+  "settings_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["service_enabled", "transition", "transition_ms", "layout_json", "brightness"],
+    "properties": {
+      "service_enabled": {
+        "type": "boolean",
+        "title": "Enable screen display",
+        "default": true,
+        "i18n": {
+          "default": "Enable screen display",
+          "zh": "启用屏幕显示",
+          "zh-TW": "啟用螢幕顯示"
+        }
+      },
+      "transition": {
+        "type": "string",
+        "title": "Transition",
+        "enum": ["slide", "fade"],
+        "default": "slide",
+        "i18n": {
+          "default": "Transition",
+          "zh": "过渡",
+          "zh-TW": "過渡"
+        }
+      },
+      "transition_ms": {
+        "type": "integer",
+        "title": "Transition milliseconds",
+        "default": 280,
+        "minimum": 80,
+        "maximum": 800,
+        "i18n": {
+          "default": "Transition milliseconds",
+          "zh": "过渡时长（毫秒）",
+          "zh-TW": "過渡時長（毫秒）"
+        }
+      },
+      "layout_json": {
+        "type": "string",
+        "title": "Screen layout",
+        "default": "{\"complications\":[],\"apps\":[],\"app_view\":\"icons\"}",
+        "maxLength": 2048,
+        "i18n": {
+          "default": "Screen layout",
+          "zh": "屏幕布局",
+          "zh-TW": "螢幕佈局"
+        }
+      },
+      "brightness": {
+        "type": "integer",
+        "title": "Brightness",
+        "default": 100,
+        "minimum": 5,
+        "maximum": 100,
+        "i18n": {
+          "default": "Brightness",
+          "zh": "亮度",
+          "zh-TW": "亮度"
+        }
+      }
+    }
+  },
+  "secret_fields": [],
+  "memory_budget": "4M",
+  "resource_limits": {
+    "memory_max": "16M",
+    "cpu_quota": "25%",
+    "tasks_max": 8,
+    "limit_nofile": 32
+  },
+  "healthcheck": {
+    "type": "exec",
+    "command": ["bin/onekvm-screen-display", "--health"],
+    "timeout_seconds": 5
+  }
+}
