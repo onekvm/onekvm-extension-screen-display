@@ -8,9 +8,9 @@ the screen plugin provides `screen-display.face` and `screen-display.widget`.
 There is no screen-specific registration command or shared directory to edit.
 Enabled contributors appear in the Web designer and on the device; disabling
 or removing one removes its entries. See
-[`onekvm-extension-host/docs/extension-points.md`](../../onekvm-extension-host/docs/extension-points.md)
+[`onekvm-extension-host/docs/extension-points.md`](https://github.com/onekvm/onekvm-extension-host/blob/main/docs/extension-points.md)
 for the generic protocol and
-[`onekvm-screen-display/docs/extension-points.md`](../../onekvm-screen-display/docs/extension-points.md)
+[`onekvm-screen-display/docs/extension-points.md`](https://github.com/onekvm/onekvm-screen-display/blob/main/docs/extension-points.md)
 for the face and widget contracts. The same host mechanism supports extension
 points owned by other plugins.
 
